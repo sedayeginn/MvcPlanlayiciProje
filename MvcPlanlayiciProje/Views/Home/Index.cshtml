@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@section Styles {
+
+    <link href="~/lib/fullcalendar/core/main.css" rel="stylesheet" />
+    <link href="~/lib/fullcalendar/daygrid/main.css" rel="stylesheet" />
+    <link href="~/lib/fullcalendar/timegrid/main.css" rel="stylesheet" />
+    <link href="~/lib/fullcalendar/bootstrap/main.css" rel="stylesheet" />
+    <link href="~/lib/fullcalendar/list/main.css" rel="stylesheet" />
+    <link href="~/lib/fullcalendar/interaction/main.js" rel="stylesheet" />
+    <link href="~/font-awesome/css/all.css" rel="stylesheet" />
+}
+<div id="calendar">
+
+</div>
+
+@section Scripts {
+    <script src="~/lib/fullcalendar/core/main.js"></script>
+    <script src="~/lib/fullcalendar/daygrid/main.js"></script>
+    <script src="~/lib/fullcalendar/timegrid/main.js"></script>
+    <script src="~/lib/fullcalendar/bootstrap/main.js"></script>
+    <script src="~/lib/fullcalendar/list/main.js"></script>
+    <script src="~/lib/fullcalendar/interaction/main.js"></script>
+    <script src="~/lib/fullcalendar/core/locales/tr.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                plugins: ['interaction', 'dayGrid', 'timeGrid', 'list', 'bootstrap'],
+                themeSystem: 'bootstrap',
+                locale: 'tr',
+                header: {
+                    left: 'prev, next, today',
+                    center: 'title',
+                    right: 'dayGridMonth, timeGridWeek, timeGridDay, listWeek'
+                },
+                footer: {
+                    left: 'prevYear',
+                    right: 'nextYear'
+                },
+                handleWindowResize: true,
+                showNonCurrentDates: false,
+                defaultView: 'dayGridMonth',
+                weekends: true,
+                allDaySlot: false,
+                titleFormat: {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                },
+                titleRangeSeperator: ' - ',
+                columnHeaderFormat: {
+                    weekday: 'long'
+                },
+                timeZone: 'UTC',
+                events: [
+                    {
+                        id: 'x',
+                        title: 'merhaba',
+                        start: '2022-01-01',
+                        end: '2022-01-02'
+                    }],
+                selectable: true,
+                select: function (selectioninfo) {
+                    console.log(selectioninfo);
+                }
+            });
+            calendar.render();
+        });
+
+    </script>
+}

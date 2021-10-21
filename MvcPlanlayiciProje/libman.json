@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "fullcalendar@4.2.0",
+      "destination": "wwwroot/fullcalendar/"
+    },
+    {
+      "library": "font-awesome@5.15.4",
+      "destination": "wwwroot/font-awesome/"
+    }
+  ]
+}
