@@ -9,6 +9,14 @@
     {
       "library": "font-awesome@5.15.4",
       "destination": "wwwroot/font-awesome/"
+    },
+    {
+      "library": "moment.js@2.29.1",
+      "destination": "wwwroot/moment.js/"
+    },
+    {
+      "library": "moment-timezone@0.5.33",
+      "destination": "wwwroot/moment-timezone/"
     }
   ]
 }

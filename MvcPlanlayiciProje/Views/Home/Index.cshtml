@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model PlanViewModel
+@{
+    ViewData["Title"] = "Ana Sayfa";
 }
 @section Styles {
 
@@ -11,24 +12,165 @@
     <link href="~/lib/fullcalendar/interaction/main.js" rel="stylesheet" />
     <link href="~/font-awesome/css/all.css" rel="stylesheet" />
 }
-<div id="calendar">
 
+
+<div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Plan Ekleme/Güncelleme</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input hidden id="planId" />
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="form-control-label">Başlangıç Tarihi : </label>
+                            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                <input id="inputStartDate" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="form-control-label">Bitiş Tarihi : </label>
+                            <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                                <input id="inputEndDate" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
+                                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="form-control-label">Title : </label>
+                            <input id="inputTitle" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="form-control-label">Açıklama : </label>
+                            <textarea id="inputDescription" type="text" class="form-control" rows="5"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button id="btnSave" type="button" class="btn btn-primary">Kaydet</button>
+            </div>
+        </div>
+    </div>
 </div>
 
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Plan Detayları</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="form-control-label">Başlangıç Tarihi : </label>
+                            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                <input id="inputStartDateDetail" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="form-control-label">Bitiş Tarihi : </label>
+                            <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                                <input id="inputEndDateDetail" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
+                                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="form-control-label">Başlık : </label>
+                            <input id="inputTitleDetail" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="form-control-label">Açıklama : </label>
+                            <textarea id="inputDescriptionDetail" type="text" class="form-control" rows="5"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnDelete" type="button" class="btn btn-outline-danger">Sil</button>
+                <button id="btnUpdate" type="button" class="btn btn-outline-primary">Güncelle</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                @*<h5 class="card-title">Plan Defteri</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@Model.UserName</h6>*@
+                <p class="card-text">Plan Defterine hoş geldiniz.</p>
+                <a href="/Account/Logout" class="card-link">Çıkış Yap</a>
+            </div>
+        </div>
+        <br />
+    </div>
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-body">
+                <div id="calendar">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts {
+    <script src="~/moment.js/moment.js"></script>
+    <script src="~/moment-timezone/moment-timezone-with-data-10-year-range.js"></script>
     <script src="~/lib/fullcalendar/core/main.js"></script>
+    <script src="~/lib/fullcalendar/moment/main.js"></script>
+    <script src="~/lib/fullcalendar/moment-timezone/main.js"></script>
     <script src="~/lib/fullcalendar/daygrid/main.js"></script>
     <script src="~/lib/fullcalendar/timegrid/main.js"></script>
     <script src="~/lib/fullcalendar/bootstrap/main.js"></script>
     <script src="~/lib/fullcalendar/list/main.js"></script>
     <script src="~/lib/fullcalendar/interaction/main.js"></script>
     <script src="~/lib/fullcalendar/core/locales/tr.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: ['interaction', 'dayGrid', 'timeGrid', 'list', 'bootstrap'],
                 themeSystem: 'bootstrap',
+                timeZone: 'Europe/Istanbul',
+                bootstrapFontAwesome: {
+                    dayGridMonth: 'calendar',
+                    prev: 'fa-chevron-circle-left',
+                    next: 'fa-chevron-circle-right',
+                    listWeek: 'fa-list'
+                },
                 locale: 'tr',
                 header: {
                     left: 'prev, next, today',
@@ -39,8 +181,16 @@
                     left: 'prevYear',
                     right: 'nextYear'
                 },
-                handleWindowResize: true,
+                minTime: '08:00:00',
+                maxTime: '21:00:00',
+                snapDuration: '00:15:00',
+                slotLabelFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                },
+                fixedWeekCount: true,
                 showNonCurrentDates: false,
+                contentHeight: 650,
                 defaultView: 'dayGridMonth',
                 weekends: true,
                 allDaySlot: false,
@@ -49,25 +199,193 @@
                     month: 'long',
                     day: 'numeric'
                 },
-                titleRangeSeperator: ' - ',
+                titleRangeSeparator: ' / ',
                 columnHeaderFormat: {
                     weekday: 'long'
                 },
-                timeZone: 'UTC',
-                events: [
-                    {
-                        id: 'x',
-                        title: 'merhaba',
-                        start: '2022-01-01',
-                        end: '2022-01-02'
-                    }],
+                eventTimeFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                },
+                events: [],
                 selectable: true,
-                select: function (selectioninfo) {
-                    console.log(selectioninfo);
-                }
+                select: function (selectionInfo) {
+                    console.log(selectionInfo);
+                    $('#saveModal').modal();
+                },
+                selectable: true,
+                select: function (selectionInfo) {
+                    console.log(selectionInfo);
+                    selectedEvent = {
+                        id: 0,
+                        start: moment(selectionInfo.start),
+                        end: moment(selectionInfo.end),
+                        title: "",
+                        description: "",
+                    }
+
+                    openAddOrUpdateModal();
+                },
+                eventClick: function (info) {
+                    selectedEvent = {
+                        id: info.event.id,
+                        start: moment(info.event.start),
+                        end: moment(info.event.end),
+                        title: info.event.extendedProps.title,
+                        description: info.event.extendedProps.description
+                    },
+                    $('#inputStartDateDetail').val(moment(info.event.start).format('DD/MM/YYYY HH:ss'));
+                    $('#inputEndDateDetail').val(moment(info.event.end).format('DD/MM/YYYY HH:ss'));
+                    $('#inputTitleDetail').val(info.event.extendedProps.title);
+                    $('#inputDescriptionDetail').val(info.event.extendedProps.description);
+                    $('#detailModal').modal();
+                },
+                editable: true,
+                eventDrop: function (dropEventInfo) {
+                    var plan = {
+                        Id: dropEventInfo.event.id,
+                        UserId: dropEventInfo.event.extendedProps.userId,
+                        StartDate: moment(dropEventInfo.event.start).format('DD/MM/YYYY HH:mm'),
+                        EndDate: moment(dropEventInfo.event.end).format('DD/MM/YYYY HH:mm'),
+                        Title: dropEventInfo.event.extendedProps.title,
+                        Description: dropEventInfo.event.extendedProps.description
+                    }
+
+                    savePlan(plan);
+
+
+                },
+                eventResize: function (dropEventInfo) {
+                    var plan = {
+                        Id: dropEventInfo.event.id,
+                        UserId: dropEventInfo.event.extendedProps.userId,
+                        StartDate: moment(dropEventInfo.event.start).format('DD/MM/YYYY HH:mm'),
+                        EndDate: moment(dropEventInfo.event.end).format('DD/MM/YYYY HH:mm'),
+                        Title: dropEventInfo.event.extendedProps.title,
+                        Description: dropEventInfo.event.extendedProps.description
+                    }
+
+                    savePlan(plan);
+                },
+
             });
             calendar.render();
-        });
+            getPlans();
 
+            $('#datetimepicker1, #datetimepicker2').datetimepicker({
+                format: 'DD/MM/YYYY HH:mm'
+            });
+           
+            function getPlans() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/plan/GetPlans',
+                    success: function (response) {
+                        events = [];
+                        var sources = calendar.getEventSources();
+                        for (var i = 0; i < sources.length; i++) {
+                            sources[i].remove();
+                        }
+                        for (var i = 0; i < response.length; i++) {
+                            events.push({
+                                id: response[i].id,
+                                start: response[i].startDate,
+                                end: response[i].endDate,
+                                title: response[i].title,
+                                description: response[i].description,
+                                userId: response[i].userId
+                            });
+                        }
+                        calendar.addEventSource(events);
+                    },
+                    error: function () {
+                        $('#saveModal').modal('hide');
+                        alertify.error('Plan oluştururken bir problem oluştu.');
+                    }
+                });
+            }
+            function openAddOrUpdateModal() {
+                if (selectedEvent != null) {
+                    $('#planId').val(selectedEvent.id);
+                    $('#inputStartDate').val(selectedEvent.start.format('DD/MM/YYYY HH:mm'));
+                    $('#inputEndDate').val(selectedEvent.end.format('DD/MM/YYYY HH:mm'));
+                    $('#inputTitle').val(selectedEvent.description);
+                    $('#inputDescription').val(selectedEvent.description);
+                }
+
+                $('#saveModal').modal();
+            }
+
+            function savePlan(data) {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Plan/AddOrUpdatePlan',
+                    data: data,
+                    success: function (response) {
+                        if (response === "200") {
+                            getPlans();
+                            $('#saveModal').modal('hide');
+                            data.id === "0" ? alertify.success('Planınız başarıyla kaydedilmiştir') : alertify.success('Planınız başarıyla güncellenmiştir.');
+                        } else {
+                            $('#saveModal').modal('hide');
+                            alertify.warning('Plan eklenemedi.');
+                        }
+                    },
+                    error: function () {
+                        $('#saveModal').modal('hide');
+                        alertify.error('Erişim sağlanamadı.');
+                    }
+                });
+            }
+
+            $('#btnSave').click(function () {
+                if ($('#inputTitle').val() === "") {
+                    alert("Başlık belirtilmelidir.");
+                    return;
+                }
+
+                if ($('#inputDescription').val() === "") {
+                    alert("Açıklama belirtilmelidir.");
+                    return;
+                }
+
+                var plan = {
+                    Id: $('#planId').val(),
+                    StartDate: $('#inputStartDate').val(),
+                    EndDate: $('#inputEndDate').val(),
+                    Title: $('#inputTitle').val(),
+                    Description: $('#inputDescription').val()
+                }
+                savePlan(plan);
+            });
+
+            $('#btnUpdate').click(function () {
+                $('#detailModal').modal('hide');
+                openAddOrUpdateModal();
+            });
+
+            $('#btnDelete').click(function () {
+                if (confirm('Planı silmek istediğinize emin misiniz?')) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/Plan/DeletePlan?id=' + selectedEvent.id,
+                        success: function (response) {
+                            if (response === '200') {
+                                var event = calendar.getEventById(selectedEvent.id);
+                                event.remove();
+                                $('#detailModal').modal('hide');
+                                alertify.success('Planınız silinmiştir.');
+                            }
+                        },
+                        error: function () {
+                            $('#detailModal').modal('hide');
+                            alertify.error('Planınız silinirken bir problem oluştu.');
+                        }
+                    });
+                }
+            });
+        });
     </script>
+
 }
