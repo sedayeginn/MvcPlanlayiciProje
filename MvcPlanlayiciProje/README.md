@@ -1,1 +1,1 @@
-﻿#Planlayıcı
+# Planlayıcı
